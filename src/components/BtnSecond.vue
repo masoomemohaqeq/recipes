@@ -1,6 +1,6 @@
 <template>
   <button
-    class="bg-teal-600 text-white hover:bg-transparent hover:border-teal-600 hover:text-teal-900"
+    class="bg-yellow-500 text-blackhover:bg-transparent hover:border-yellow-500 hover:text-black"
   >
     {{ text }}
   </button>

@@ -1,6 +1,4 @@
 <template>
-  <NavBar />
-
   <div class="text-center mt-6 mb-5 space-y-4 container mx-auto">
     <h1
       class="capitalize text-3xl border-b-[3px] border-yellow-400 inline-block hover:border-red-700"

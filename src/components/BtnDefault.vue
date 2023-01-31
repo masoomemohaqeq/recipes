@@ -1,7 +1,5 @@
 <template>
-  <button
-    class="bg-teal-600 text-white hover:bg-transparent hover:border-teal-600 hover:text-teal-900"
-  >
+  <button class="bg-gray-300 text-black">
     {{ text }}
   </button>
 </template>

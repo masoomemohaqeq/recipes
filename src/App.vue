@@ -1,9 +1,13 @@
 <template>
-  <nav>
-    <!-- <router-link to="/">All</router-link> -->
-  </nav>
+  <NavBar />
   <router-view />
 </template>
 
-<script></script>
+<script>
+import NavBar from "./components/NavBar.vue";
+
+export default {
+  components: { NavBar },
+};
+</script>
 <style></style>

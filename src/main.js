@@ -14,11 +14,13 @@ import {
   faClock,
   faFaceSadCry,
   faStar,
+  faUpload,
   faUserSecret,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
-library.add(faUserSecret, faFaceSadCry, faStar, faClock);
+library.add(faUserSecret, faFaceSadCry, faStar, faClock, faXmark, faUpload);
 
 createApp(App)
   .component("font-awesome-icon", FontAwesomeIcon)

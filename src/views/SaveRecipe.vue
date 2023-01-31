@@ -10,7 +10,10 @@
             <label>Title:</label>
             <input type="text" v-model="recipe.title" required />
           </div>
-
+          <!-- <div class="input-group">
+            <label>Slug:</label>
+            <input type="text" v-model="recipe.slug" required />
+          </div> -->
           <div class="input-group">
             <label>Category:</label>
             <select v-model="recipe.category" required>
@@ -19,9 +22,6 @@
               <option value="drink">Drink</option>
               <option value="dessert">Dessert</option>
             </select>
-          </div>
-          <div class="input-group">
-            <FileUploader />
           </div>
           <div class="input-group">
             <label>Card Image:</label>
@@ -47,15 +47,15 @@
           </div>
           <div class="input-group">
             <label>Description:</label>
-            <textarea v-model="recipe.description"></textarea>
+            <textarea v-model="recipe.description" rows="8" required></textarea>
           </div>
           <div class="input-group">
             <label>Ingredients (comma seperate):</label>
-            <textarea v-model="recipe.ingredient" required></textarea>
+            <textarea v-model="recipe.ingredient" rows="8" required></textarea>
           </div>
           <div class="input-group">
             <label>Method:</label>
-            <textarea v-model="recipe.method" required></textarea>
+            <textarea v-model="recipe.method" rows="12" required></textarea>
           </div>
           <div class="mx-auto w-fit space-x-4">
             <BtnSecond
@@ -69,6 +69,9 @@
             <Btn text="Save Recipe" />
           </div>
         </form>
+        <!-- <div v-else-if="!error">
+    <Loading />
+  </div> -->
         <div class="my-4">
           <ErrorMessage v-if="error" :error="error" />
           <SuccessMessage v-if="success" :msg="success" />
@@ -82,39 +85,44 @@
 import { ref } from "@vue/reactivity";
 
 import Btn from "@/components/Btn.vue";
+import NavBar from "@/components/NavBar.vue";
 
+import GetRecipe from "@/composables/getRecipe.js";
+
+import Loading from "@/components/Loading.vue";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import SuccessMessage from "@/components/SuccessMessage.vue";
+import router from "@/router";
 import BtnThird from "@/components/BtnThird.vue";
 import BtnSecond from "@/components/BtnSecond.vue";
-import FileUploader from "@/components/FileUploader.vue";
 
 export default {
+  props: ["id"],
   components: {
+    NavBar,
     Btn,
+    Loading,
     ErrorMessage,
     SuccessMessage,
     BtnThird,
     BtnSecond,
-    FileUploader,
   },
-  setup() {
+  setup(props) {
     const error = ref(null);
     const success = ref(null);
-    const recipe = ref(clearRecipe());
 
     async function handleSubmit() {
       recipe.value.slug = recipe.value.title.replaceAll(" ", "-");
 
       const requestOptions = {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(recipe.value),
       };
 
       try {
         const response = await fetch(
-          "http://localhost:3000/recipes",
+          "http://localhost:3000/recipes/" + props.id,
           requestOptions
         );
 
@@ -123,27 +131,16 @@ export default {
         }
 
         const data = await response.json();
-        recipe.value = clearRecipe();
-        success.value = "Successfully added.";
+        success.value = "Successfully updated. ";
       } catch (err) {
         error.value = err.message;
       }
     }
 
-    function clearRecipe() {
-      return {
-        id: 0,
-        title: "",
-        slug: "",
-        category: "",
-        cardImage: "",
-        image: "",
-        description: "",
-        method: "",
-        prepTime: 1,
-        ingredient: "",
-        score: 1,
-      };
+    const { recipe, getRecipe, clearRecipe } = GetRecipe(props.id);
+
+    if (props.id) {
+      getRecipe();
     }
 
     return { recipe, handleSubmit, error, success };
@@ -151,4 +148,18 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.input-group {
+  @apply flex gap-2 my-4;
+}
+
+form label {
+  @apply w-36;
+}
+
+form input,
+form select,
+form textarea {
+  @apply border border-black/20 px-1 py-2 rounded w-full  focus:border-teal-700/40 outline-none;
+}
+</style>

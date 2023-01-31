@@ -50,3 +50,25 @@
     font-family: FrankRuhlLibre;
   }
 }
+
+#app button {
+  @apply rounded-md  px-4 py-2 border transition active:animate-ping;
+}
+
+.details-line {
+  @apply border-teal-600/30 my-2;
+}
+
+.input-group {
+  @apply flex gap-2 my-4;
+}
+
+form label {
+  @apply w-36;
+}
+
+form input,
+form select,
+form textarea {
+  @apply border border-black/20 px-1 py-2 rounded w-full  focus:border-teal-700/40 outline-none;
+}

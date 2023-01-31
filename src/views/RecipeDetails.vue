@@ -1,17 +1,25 @@
 <template>
-  <NavBar />
   <div class="container my-6 mx-auto">
     <div v-if="recipe" class="space-y-4">
       <h2 class="text-2xl mt-2">{{ recipe.title }}</h2>
       <div class="flex justify-between">
-        <Stars :score="recipe.score" />
-        <span>
-          <font-awesome-icon
-            class="text-teal-700 mr-2"
-            icon="fa-solid fa-clock"
-          />{{ recipe.prepTime }}
-          mins
-        </span>
+        <div class="flex space-x-4 items-end">
+          <Stars :score="recipe.score" />
+
+          <span>
+            <font-awesome-icon
+              class="text-teal-700 mr-2"
+              icon="fa-solid fa-clock"
+            />{{ recipe.prepTime }}
+            mins
+          </span>
+        </div>
+        <div class="space-x-4">
+          <router-link :to="{ name: 'saveRecipe', params: { id: recipe.id } }">
+            <BtnDefault text="edit" />
+          </router-link>
+          <BtnThird text="Delete" @click="toggleModal" />
+        </div>
       </div>
 
       <div class="2xl:flex items-start gap-6">
@@ -44,65 +52,96 @@
     </div>
     <Error v-if="error" :error="error" @retry="getRecipe()" />
   </div>
+  <Modal v-if="showModal">
+    <template #content>
+      <p>
+        Do you want to delete <strong>{{ deleteMsg }}</strong> ?
+      </p>
+    </template>
+    <template #actions>
+      <BtnThird text="Yes" @click="deleteRecipe" />
+      <BtnDefault text="No" @click="toggleModal" />
+    </template>
+  </Modal>
   <!-- <Recipes category="food" /> -->
 </template>
 
 <script>
 import { ref } from "@vue/reactivity";
-import { computed, onMounted } from "@vue/runtime-core";
+import { onMounted } from "@vue/runtime-core";
+import router from "@/router";
 
-import NavBar from "@/components/NavBar.vue";
+import Recipes from "@/components/Recipes.vue";
+
 import Loading from "@/components/Loading.vue";
 import Error from "@/components/Error.vue";
 import Stars from "@/components/Stars.vue";
-import Recipes from "@/components/Recipes.vue";
+import Modal from "@/components/Modal.vue";
+import Btn from "@/components/Btn.vue";
+import BtnThird from "@/components/BtnThird.vue";
+import BtnDefault from "@/components/BtnDefault.vue";
+
+import GetRecipe from "@/composables/getRecipe.js";
 
 export default {
   props: ["id", "slug"],
   components: {
-    NavBar,
     Loading,
     Error,
     Stars,
     Recipes,
+    Btn,
+    Modal,
+    BtnThird,
+    BtnDefault,
+    BtnThird,
   },
   setup(props) {
-    const recipe = ref(null);
-    const error = ref(null);
-    const getIngredients = ref("");
+    const deleteMsg = ref("");
+    const showModal = ref(false);
 
-    async function getRecipe() {
+    const { recipe, error, getRecipe, getIngredients } = GetRecipe(props.id);
+
+    getRecipe();
+
+    function toggleModal() {
+      showModal.value = !showModal.value;
+    }
+
+    async function deleteRecipe() {
+      const requestOptions = {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      };
+
       try {
-        const res = await fetch("http://localhost:3000/recipes/" + props.id);
+        const response = await fetch(
+          "http://localhost:3000/recipes/" + props.id,
+          requestOptions
+        );
 
-        if (!res.ok) throw Error("Something went wrong...");
+        if (!response.ok) {
+          throw Error("Something went wrong...");
+        }
 
-        recipe.value = await res.json();
-
-        recipe.value.ingredient.split(",").forEach((i) => {
-          getIngredients.value += `<li>* ${i}</li>`;
-        });
+        router.push("/");
       } catch (err) {
         error.value = err.message;
       }
     }
-
-    onMounted(() => {
-      getRecipe();
-    });
 
     return {
       recipe,
       error,
       getRecipe,
       getIngredients,
+      deleteMsg,
+      showModal,
+      toggleModal,
+      deleteRecipe,
     };
   },
 };
 </script>
 
-<style>
-.details-line {
-  @apply border-teal-600/30 my-2;
-}
-</style>
+<style></style>
