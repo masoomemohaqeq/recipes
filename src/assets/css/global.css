@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: FrankRuhlLibre;
+    src: url("../fonts/static/FrankRuhlLibre-Light.ttf");
+    font-weight: 300;
+  }
+
+  @font-face {
+    font-family: FrankRuhlLibre;
+    src: url("../fonts/static/FrankRuhlLibre-Regular.ttf");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: FrankRuhlLibre;
+    src: url("../fonts/static/FrankRuhlLibre-Medium.ttf");
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: FrankRuhlLibre;
+    src: url("../fonts/static/FrankRuhlLibre-SemiBold.ttf");
+    font-weight: 600;
+  }
+
+  @font-face {
+    font-family: FrankRuhlLibre;
+    src: url("../fonts/static/FrankRuhlLibre-Bold.ttf");
+    font-weight: 700;
+  }
+
+  @font-face {
+    font-family: FrankRuhlLibre;
+    src: url("../fonts/static/FrankRuhlLibre-ExtraBold.ttf");
+    font-weight: 800;
+  }
+
+  @font-face {
+    font-family: FrankRuhlLibre;
+    src: url("../fonts/static/FrankRuhlLibre-Black.ttf");
+    font-weight: 900;
+  }
+  html,
+  input,
+  textarea {
+    font-family: FrankRuhlLibre;
+  }
+}
