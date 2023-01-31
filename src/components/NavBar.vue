@@ -9,15 +9,17 @@
       </div>
       <div class="space-x-2">
         <router-link to="/"> Home</router-link>
-        <Button />
+        <router-link :to="{ name: 'addRecipe' }">
+          <Btn text="New Recipe" />
+        </router-link>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
-import Button from "@/components/Button.vue";
+import Btn from "@/components/Btn.vue";
 export default {
-  components: { Button },
+  components: { Btn },
 };
 </script>

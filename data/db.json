@@ -77,6 +77,19 @@
       "prepTime": 20,
       "ingredient": "2 medium ripe bananas,6 ounces dark chocolate,1 1/2 teaspoons canola oil,Flaky salt, sprinkles, nuts, or shredded coconut for topping, optional",
       "score": 3
+    },
+    {
+      "id": 7,
+      "title": "Egg Foo Young",
+      "slug": "Egg-Foo Young",
+      "category": "food",
+      "cardImage": "/uploads/recipes/Simply-Recipes-Egg-Foo-Young-LEAD-card.webp",
+      "image": "/uploads/recipes/Simply-Recipes-Egg-Foo-Young-LEAD.webp",
+      "description": "Although you don’t need a wok for egg foo young, a wok is the best vessel for this recipe. Since woks have a small base with steep walls, this allows the egg foo young to shallow fry without adding too much oil. Since the base is smaller than a frying pan, it also helps prevent the omelet from spreading too quickly and thinly.",
+      "method": "In a small saucepan, add the beef stock, soy sauce, Shaoxing wine, oyster sauce, and white pepper powder over medium heat. Whisk together and bring to a simmer. \n\nCombine the cornstarch and water in a small bowl and whisk to dissolve. Add to the saucepan and whisk until the gravy thickens and coats the back of the spoon, 2 to 3 minutes. Cover the saucepan with a lid and keep it warm on the lowest possible heat. In a medium bowl, whisk together the cornstarch and water until dissolved. Add the eggs, salt, and sugar. Whisk until well combined and there are no more egg white clumps. \n\nAdd the green onion, bean sprouts, and shrimp. Stir until everything is evenly coated.",
+      "prepTime": 15,
+      "ingredient": "1 cup unsalted beef stock,1 tablespoon soy sauce,1 tablespoon Shaoxing wine,1 tablespoon oyster sauce,1/2 teaspoon ground white pepper,1 tablespoon cornstarch,1 tablespoon water",
+      "score": 5
     }
   ]
 }

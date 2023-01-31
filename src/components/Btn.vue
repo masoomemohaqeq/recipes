@@ -1,13 +1,15 @@
 <template>
-  <router-link
-    :to="{ name: 'home' }"
+  <button
     class="rounded-md bg-teal-600 text-white px-4 py-3 border transition hover:bg-transparent hover:border-teal-600 hover:text-teal-900"
-    >New Recipe</router-link
   >
+    {{ text }}
+  </button>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["text"],
+};
 </script>
 
 <style></style>
