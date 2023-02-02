@@ -52,7 +52,7 @@
 }
 
 #app button {
-  @apply rounded-md  px-4 py-2 border transition active:animate-ping;
+  @apply rounded-md  px-4 py-2 border transition;
 }
 
 .details-line {
@@ -60,7 +60,7 @@
 }
 
 .input-group {
-  @apply flex gap-2 my-4;
+  @apply flex gap-2 my-4 flex-col md:flex-row;
 }
 
 form label {

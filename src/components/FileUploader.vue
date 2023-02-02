@@ -1,29 +1,27 @@
 <template>
-  <div class="w-fit mx-auto relative">
-    <div class="w-80 min-h-[100px] rounded-t-md bg-gray-500/20">
-      <img
-        class="w-full h-auto"
-        accept="image/jpeg, image/png, image/jpg, image/webp"
-        :src="fileOutput"
-        v-show="fileOutput"
-      />
+  <div
+    class="w-full md:w-72 mx-auto relative border border-gray-300 rounded-md"
+  >
+    <div class="min-h-[100px] rounded-t-md bg-gray-500/10">
+      <img class="w-full h-auto" :src="fileOutput" v-show="fileOutput" />
     </div>
     <div
       v-show="fileOutput"
-      @click="deleteImage"
-      class="absolute top-2 right-2 cursor-pointer p-4 border bg-black/30 text-white"
+      @click="deleteImagePrev"
+      class="absolute top-2 right-2 cursor-pointer px-4 py-2 border bg-black/20 text-white"
     >
       <font-awesome-icon icon="fa-solid fa-xmark" />
     </div>
 
     <div
-      class="relative border border-gray-400 hover:bg-teal-600/20 hover:border-teal-600/20 transition p-5 text-center rounded-b-md"
+      class="relative hover:bg-yellow-500 hover:text-white hover:border-teal-600/20 transition p-5 text-center cursor-pointer"
     >
-      <font-awesome-icon icon="fa-solid fa-upload" class="text-gray-800" />
+      <font-awesome-icon icon="fa-solid fa-upload" />
       <input
         type="file"
-        class="rounded-none opacity-0 absolute inset-0"
+        class="rounded-none opacity-0 absolute inset-0 cursor-pointer"
         ref="fileInput"
+        @change="$emit('initImage', fileInput.files)"
       />
     </div>
   </div>
@@ -31,33 +29,37 @@
 
 <script>
 import { ref } from "@vue/reactivity";
-import { onMounted } from "@vue/runtime-core";
+import { onMounted, watch } from "@vue/runtime-core";
+
 export default {
-  setup() {
+  props: ["img", "isLoading"],
+  setup(props) {
     const fileInput = ref();
-    const fileOutput = ref("");
-
+    const fileOutput = ref(null);
+    const error = ref(null);
     let image = null;
-
     onMounted(() => {
+      console.log(props.img);
+      fileOutput.value = props.img;
       fileInput.value.addEventListener("change", () => {
         const file = fileInput.value.files;
         image = file[0];
         fileOutput.value = URL.createObjectURL(image);
-        console.log(image);
+        error.value = null;
       });
     });
-
-    function deleteImage() {
+    watch(
+      () => props.isLoading,
+      () => {
+        fileOutput.value = props.img;
+      }
+    );
+    function deleteImagePrev() {
       fileOutput.value = null;
     }
-    return { fileInput, fileOutput, deleteImage };
+    return { fileInput, fileOutput, deleteImagePrev, error };
   },
 };
 </script>
 
-<style>
-/* input[type="file"] {
-  @apply rounded-none opacity-0;
-} */
-</style>
+<style></style>

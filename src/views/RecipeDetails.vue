@@ -3,7 +3,9 @@
     <div v-if="recipe" class="space-y-4">
       <h2 class="text-2xl mt-2">{{ recipe.title }}</h2>
       <div class="flex justify-between">
-        <div class="flex space-x-4 items-end">
+        <div
+          class="flex flex-col-reverse md:flex-row md:space-x-4 md:items-end"
+        >
           <Stars :score="recipe.score" />
 
           <span>
@@ -14,7 +16,7 @@
             mins
           </span>
         </div>
-        <div class="space-x-4">
+        <div class="space-x-2 md:space-x-4">
           <router-link :to="{ name: 'saveRecipe', params: { id: recipe.id } }">
             <BtnDefault text="edit" />
           </router-link>
@@ -55,7 +57,7 @@
   <Modal v-if="showModal">
     <template #content>
       <p>
-        Do you want to delete <strong>{{ deleteMsg }}</strong> ?
+        Do you want to delete <strong>{{ recipe.title }}</strong> ?
       </p>
     </template>
     <template #actions>
@@ -68,20 +70,17 @@
 
 <script>
 import { ref } from "@vue/reactivity";
-import { onMounted } from "@vue/runtime-core";
 import router from "@/router";
 
-import Recipes from "@/components/Recipes.vue";
-
 import Loading from "@/components/Loading.vue";
-import Error from "@/components/Error.vue";
+import Error from "@/components/messages/Error.vue";
 import Stars from "@/components/Stars.vue";
 import Modal from "@/components/Modal.vue";
-import Btn from "@/components/Btn.vue";
-import BtnThird from "@/components/BtnThird.vue";
-import BtnDefault from "@/components/BtnDefault.vue";
+import BtnThird from "@/components/buttons/BtnThird.vue";
+import BtnDefault from "@/components/buttons/BtnDefault.vue";
+import Recipes from "@/components/Recipes.vue";
 
-import GetRecipe from "@/composables/getRecipe.js";
+import GetRecipe from "@/composables/getRecipe";
 
 export default {
   props: ["id", "slug"],
@@ -90,7 +89,6 @@ export default {
     Error,
     Stars,
     Recipes,
-    Btn,
     Modal,
     BtnThird,
     BtnDefault,

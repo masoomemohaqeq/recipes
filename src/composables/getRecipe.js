@@ -13,7 +13,7 @@ function getRecipe(id) {
 
       recipe.value = await res.json();
 
-      recipe.value.ingredient.split(",").forEach((i) => {
+      recipe.value.ingredient.split("\n").forEach((i) => {
         getIngredients.value += `<li>* ${i}</li>`;
       });
     } catch (err) {

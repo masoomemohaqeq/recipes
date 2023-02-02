@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:bg-teal-500/10">
+  <div class="lg:bg-teal-600/10">
     <div class="mx-2 lg:mx-auto lg:max-w-4xl py-4">
       <div class="lg:bg-white rounded-md px-6 py-4 lg:shadow">
         <h2 class="text-2xl font-bold">New Recipe</h2>
@@ -10,10 +10,6 @@
             <label>Title:</label>
             <input type="text" v-model="recipe.title" required />
           </div>
-          <!-- <div class="input-group">
-            <label>Slug:</label>
-            <input type="text" v-model="recipe.slug" required />
-          </div> -->
           <div class="input-group">
             <label>Category:</label>
             <select v-model="recipe.category" required>
@@ -23,17 +19,34 @@
               <option value="dessert">Dessert</option>
             </select>
           </div>
+
           <div class="input-group">
             <label>Card Image:</label>
-            <input type="text" v-model="recipe.cardImage" required />
+            <FileUploader
+              @initImage="saveCardImagePrev"
+              :img="recipe.cardImage"
+              :isLoading="isLoading"
+            />
           </div>
+
           <div class="input-group">
             <label>Image:</label>
-            <input type="text" v-model="recipe.image" required />
+            <FileUploader
+              @initImage="saveImagePrev"
+              :img="recipe.image"
+              :isLoading="isLoading"
+            />
           </div>
+
           <div class="input-group">
             <label>Prepration Time (mins):</label>
-            <input type="number" v-model="recipe.prepTime" min="1" required />
+            <input
+              type="number"
+              v-model="recipe.prepTime"
+              min="1"
+              required
+              :isLoading="isLoading"
+            />
           </div>
           <div class="input-group">
             <label> Score (1-5):</label>
@@ -50,7 +63,7 @@
             <textarea v-model="recipe.description" rows="8" required></textarea>
           </div>
           <div class="input-group">
-            <label>Ingredients (comma seperate):</label>
+            <label>Ingredients (seperate by enter):</label>
             <textarea v-model="recipe.ingredient" rows="8" required></textarea>
           </div>
           <div class="input-group">
@@ -59,7 +72,7 @@
           </div>
           <div class="mx-auto w-fit space-x-4">
             <BtnSecond
-              text="Cancel"
+              text="Back"
               @click="
                 () => {
                   $router.go(-1);
@@ -84,43 +97,70 @@
 <script>
 import { ref } from "@vue/reactivity";
 
-import Btn from "@/components/Btn.vue";
+import Btn from "@/components/buttons/Btn.vue";
+import BtnSecond from "@/components/buttons/BtnSecond.vue";
 import NavBar from "@/components/NavBar.vue";
-
-import GetRecipe from "@/composables/getRecipe.js";
-
 import Loading from "@/components/Loading.vue";
-import ErrorMessage from "@/components/ErrorMessage.vue";
-import SuccessMessage from "@/components/SuccessMessage.vue";
-import router from "@/router";
-import BtnThird from "@/components/BtnThird.vue";
-import BtnSecond from "@/components/BtnSecond.vue";
+import ErrorMessage from "@/components/messages/ErrorMessage.vue";
+import SuccessMessage from "@/components/messages/SuccessMessage.vue";
+import FileUploader from "@/components/FileUploader.vue";
+
+import GetRecipe from "@/composables/getRecipe";
+import fileUpload from "@/composables/fileUpload";
 
 export default {
   props: ["id"],
   components: {
     NavBar,
-    Btn,
     Loading,
     ErrorMessage,
     SuccessMessage,
-    BtnThird,
+    Btn,
     BtnSecond,
+    FileUploader,
   },
   setup(props) {
     const error = ref(null);
     const success = ref(null);
+    const cardImageFile = ref(null);
+    const imageFile = ref(null);
+    const isLoading = ref(true);
+
+    const uploadImage = fileUpload;
 
     async function handleSubmit() {
+      error.value = null;
+      success.value = null;
+
       recipe.value.slug = recipe.value.title.replaceAll(" ", "-");
 
-      const requestOptions = {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(recipe.value),
-      };
-
       try {
+        if (cardImageFile.value) {
+          let cardResult = await uploadImage(cardImageFile.value);
+
+          if (cardResult.success) {
+            recipe.value.cardImage = cardResult.url;
+          } else {
+            throw new Error(`Card Image: ${cardResult.message}`);
+          }
+        }
+
+        if (imageFile.value) {
+          let imageResult = await uploadImage(imageFile.value);
+
+          if (imageResult.success) {
+            recipe.value.image = imageResult.url;
+          } else {
+            throw new Error(`Image: ${imageResult.message}`);
+          }
+        }
+
+        const requestOptions = {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(recipe.value),
+        };
+
         const response = await fetch(
           "http://localhost:3000/recipes/" + props.id,
           requestOptions
@@ -132,18 +172,39 @@ export default {
 
         const data = await response.json();
         success.value = "Successfully updated. ";
+
+        cardImageFile.value = null;
+        imageFile.value = null;
       } catch (err) {
         error.value = err.message;
       }
     }
 
-    const { recipe, getRecipe, clearRecipe } = GetRecipe(props.id);
+    const { recipe, getRecipe } = GetRecipe(props.id);
 
     if (props.id) {
-      getRecipe();
+      getRecipe().then(() => {
+        isLoading.value = false;
+      });
     }
 
-    return { recipe, handleSubmit, error, success };
+    const saveCardImagePrev = (files) => {
+      cardImageFile.value = files[0];
+    };
+
+    const saveImagePrev = (files) => {
+      imageFile.value = files[0];
+    };
+
+    return {
+      recipe,
+      handleSubmit,
+      error,
+      success,
+      saveCardImagePrev,
+      saveImagePrev,
+      isLoading,
+    };
   },
 };
 </script>

@@ -22,7 +22,7 @@ import { computed, onMounted } from "@vue/runtime-core";
 
 import Card from "@/components/Card.vue";
 import Loading from "@/components/Loading.vue";
-import Error from "@/components/Error.vue";
+import Error from "@/components/messages/Error.vue";
 
 export default {
   props: ["category"],

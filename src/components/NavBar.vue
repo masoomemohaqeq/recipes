@@ -3,10 +3,13 @@
     <div
       class="flex justify-between items-center font-bold text-teal-900 px-4 py-4 2xl:container 2xl:mx-auto"
     >
-      <div>
-        <img class="w-10 inline-block" src="../assets/images/chef-icon.png" />
-        <span class="">Yummy Recipes</span>
+      <div class="cursor-pointer">
+        <router-link to="/">
+          <img class="w-10 inline-block" src="../assets/images/chef-icon.png" />
+          <span class="hidden md:inline-block">Yummy Recipes</span>
+        </router-link>
       </div>
+
       <div class="space-x-2">
         <router-link
           to="/"
@@ -23,7 +26,7 @@
 </template>
 
 <script>
-import Btn from "@/components/Btn.vue";
+import Btn from "@/components/buttons/Btn.vue";
 export default {
   components: { Btn },
 };

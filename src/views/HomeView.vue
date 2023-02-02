@@ -5,7 +5,7 @@
     >
       The fantasic world of cooking
     </h1>
-    <ul class="category flex justify-center gap-x-16">
+    <ul class="category flex justify-center gap-3 md:gap-x-16">
       <li
         :class="{ 'border-b-2 border-red-700': selectedCategory === '' }"
         @click="setSeletedCategory('')"
