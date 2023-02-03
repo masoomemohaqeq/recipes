@@ -20,13 +20,15 @@
           <h2 class="text-3xl font-normal">{{ recipe.title }}</h2>
         </div>
         <div
-          class="flex justify-between items-center mt-6 mb-1 sm:absolute bottom-3"
+          class="flex justify-between items-center mt-6 mb-1 sm:absolute bottom-3 w-full"
         >
           <span class="text-sm text-black/95 font-sans">
             <font-awesome-icon class="text-teal-700" icon="fa-solid fa-clock" />
             {{ recipe.prepTime }} mins</span
           >
-          <Stars :score="recipe.score" />
+          <div class="md:absolute right-8">
+            <Stars class="w-full" :score="recipe.score" />
+          </div>
         </div>
       </div>
     </router-link>

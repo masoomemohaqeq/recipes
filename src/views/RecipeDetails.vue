@@ -8,13 +8,13 @@
         >
           <Stars :score="recipe.score" />
 
-          <span>
+          <div>
             <font-awesome-icon
               class="text-teal-700 mr-2"
               icon="fa-solid fa-clock"
             />{{ recipe.prepTime }}
             mins
-          </span>
+          </div>
         </div>
         <div class="space-x-2 md:space-x-4">
           <router-link :to="{ name: 'saveRecipe', params: { id: recipe.id } }">
@@ -65,7 +65,6 @@
       <BtnDefault text="No" @click="toggleModal" />
     </template>
   </Modal>
-  <!-- <Recipes category="food" /> -->
 </template>
 
 <script>
