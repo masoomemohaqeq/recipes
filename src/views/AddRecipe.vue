@@ -136,7 +136,7 @@ export default {
         };
 
         const response = await fetch(
-          "http://localhost:3000/recipes",
+          "https://localhost:7109/api/Recipes",
           requestOptions
         );
 

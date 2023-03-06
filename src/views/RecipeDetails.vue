@@ -113,7 +113,7 @@ export default {
 
       try {
         const response = await fetch(
-          "http://localhost:3000/recipes/" + props.id,
+          "https://localhost:7109/api/Recipes/" + props.id,
           requestOptions
         );
 

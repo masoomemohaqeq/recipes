@@ -37,7 +37,7 @@ export default {
 
     async function getRecipes() {
       try {
-        const res = await fetch("http://localhost:3000/recipes");
+        const res = await fetch("https://localhost:7109/api/Recipes");
 
         if (!res.ok) throw Error("Something went wrong...");
 

@@ -7,7 +7,7 @@ function getRecipe(id) {
 
   async function getRecipe() {
     try {
-      const res = await fetch("http://localhost:3000/recipes/" + id);
+      const res = await fetch("https://localhost:7109/api/Recipes/" + id);
 
       if (!res.ok) throw Error("Something went wrong...");
 
