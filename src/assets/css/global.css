@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply box-border;
+  }
+  *,
+  *:before,
+  *:after {
+    @apply box-border;
+  }
+
   @font-face {
     font-family: FrankRuhlLibre;
     src: url("../fonts/static/FrankRuhlLibre-Light.ttf");

@@ -19,6 +19,8 @@
 <script>
 import { ref } from "@vue/reactivity";
 import { computed, onMounted } from "@vue/runtime-core";
+import { config } from "@/configurations/config";
+import { authHeader } from "@/helpers/authHeader";
 
 import Card from "@/components/Card.vue";
 import Loading from "@/components/Loading.vue";
@@ -37,7 +39,11 @@ export default {
 
     async function getRecipes() {
       try {
-        const res = await fetch("https://localhost:7109/api/Recipes");
+        const requestOptions = {
+          method: "GET",
+          headers: authHeader(),
+        };
+        const res = await fetch(`${config.apiUrl}/Recipes`, requestOptions);
 
         if (!res.ok) throw Error("Something went wrong...");
 

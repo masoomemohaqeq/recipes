@@ -15,10 +15,30 @@
           to="/"
           class="cursor-pointer hover:border-b border-b-teal-700 pb-2"
         >
-          Home</router-link
+          <span class="hidden md:inline-block">Home</span>
+        </router-link>
+        <router-link
+          :to="{ name: 'addRecipe' }"
+          class="cursor-pointer hover:border-b border-b-teal-700 pb-2"
         >
-        <router-link :to="{ name: 'addRecipe' }">
-          <Btn text="New Recipe" />
+          <font-awesome-icon
+            icon="fa-solid fa-file-circle-plus"
+            class="inline-block md:hidden"
+            title="Add new recipe"
+          />
+          <span class="hidden md:inline-block">New Recipe</span>
+        </router-link>
+        <router-link
+          :to="{ name: 'login' }"
+          class="cursor-pointer hover:border-b border-b-teal-700 pb-2"
+        >
+          <div @click="logout" class="inline-block" title="Logout">
+            <font-awesome-icon
+              icon="fa-solid fa-right-from-bracket"
+              class="inline-block md:hidden"
+            />
+            <span class="hidden md:inline-block">Logout</span>
+          </div>
         </router-link>
       </div>
     </div>
@@ -26,8 +46,17 @@
 </template>
 
 <script>
-import Btn from "@/components/buttons/Btn.vue";
+import Btn from "@/components/buttons/Btn";
+import { userService } from "@/composables/userServices";
+
 export default {
   components: { Btn },
+  setup() {
+    const logout = () => {
+      userService.logout();
+    };
+
+    return { logout };
+  },
 };
 </script>

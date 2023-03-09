@@ -1,14 +1,19 @@
 import { ref } from "@vue/reactivity";
 import { computed, onMounted } from "@vue/runtime-core";
+import { config } from "@/configurations/config";
+import { authHeader } from "@/helpers/authHeader";
 
 function getRecipes(category) {
-  console.log(category);
   const recipes = ref([]);
   const error = ref(null);
 
   async function getRecipes() {
     try {
-      const res = await fetch("https://localhost:7109/api/Recipes");
+      const requestOptions = {
+        method: "GET",
+        headers: authHeader(),
+      };
+      const res = await fetch(`${config.apiUrl}/Recipes`, requestOptions);
 
       if (!res.ok) throw Error("Something went wrong...");
 

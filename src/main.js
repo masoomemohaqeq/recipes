@@ -13,6 +13,9 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faClock,
   faFaceSadCry,
+  faFileCirclePlus,
+  faHome,
+  faRightFromBracket,
   faStar,
   faUpload,
   faUserSecret,
@@ -20,7 +23,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
-library.add(faUserSecret, faFaceSadCry, faStar, faClock, faXmark, faUpload);
+library.add(
+  faUserSecret,
+  faFaceSadCry,
+  faStar,
+  faClock,
+  faXmark,
+  faUpload,
+  faRightFromBracket,
+  faHome,
+  faFileCirclePlus
+);
 
 createApp(App)
   .component("font-awesome-icon", FontAwesomeIcon)

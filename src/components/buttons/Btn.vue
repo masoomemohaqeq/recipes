@@ -1,5 +1,6 @@
 <template>
   <button
+    :disabled="disabled"
     class="bg-teal-600 text-white hover:bg-transparent hover:border-teal-600 hover:text-teal-900"
   >
     {{ text }}
@@ -8,7 +9,7 @@
 
 <script>
 export default {
-  props: ["text"],
+  props: ["text", "disabled"],
 };
 </script>
 

@@ -1,3 +1,6 @@
+import { config } from "@/configurations/config";
+import { authHeader } from "@/helpers/authHeader";
+
 async function uploadImage(file) {
   const uploadResult = {
     success: false,
@@ -12,10 +15,11 @@ async function uploadImage(file) {
 
   formData.append("file", file);
 
-  await fetch("https://localhost:7109/FileUploader?folder=recipes", {
+  await fetch(`${config.apiUrl}/FileUploader?folder=recipes`, {
     method: "POST",
     mode: "cors",
     body: formData,
+    headers: authHeader(),
   })
     .then((response) => {
       if (!response.ok) {

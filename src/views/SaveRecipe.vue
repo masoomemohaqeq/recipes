@@ -170,7 +170,7 @@ export default {
           throw Error("Something went wrong...");
         }
 
-        const data = await response.json();
+        // const data = await response.json();
         success.value = "Successfully updated. ";
 
         cardImageFile.value = null;

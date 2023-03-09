@@ -1,4 +1,6 @@
 import { ref } from "@vue/reactivity";
+import { config } from "@/configurations/config";
+import { authHeader } from "@/helpers/authHeader";
 
 function getRecipe(id) {
   const recipe = ref(clearRecipe());
@@ -7,7 +9,11 @@ function getRecipe(id) {
 
   async function getRecipe() {
     try {
-      const res = await fetch("https://localhost:7109/api/Recipes/" + id);
+      const requestOptions = {
+        method: "GET",
+        headers: authHeader(),
+      };
+      const res = await fetch(`${config.apiUrl}/Recipes/${id}`, requestOptions);
 
       if (!res.ok) throw Error("Something went wrong...");
 
