@@ -17,10 +17,17 @@
           </div>
         </div>
         <div class="space-x-2 md:space-x-4">
-          <router-link :to="{ name: 'saveRecipe', params: { id: recipe.id } }">
+          <router-link
+            :to="{ name: 'saveRecipe', params: { id: recipe.id } }"
+            v-if="hasPermission('Permissions.Recipes.Edit')"
+          >
             <BtnDefault text="edit" />
           </router-link>
-          <BtnThird text="Delete" @click="toggleModal" />
+          <BtnThird
+            text="Delete"
+            @click="toggleModal"
+            v-if="hasPermission('Permissions.Recipes.Delete')"
+          />
         </div>
       </div>
 
@@ -80,6 +87,7 @@ import BtnDefault from "@/components/buttons/BtnDefault.vue";
 import Recipes from "@/components/Recipes.vue";
 
 import GetRecipe from "@/composables/getRecipe";
+import { userService } from "@/composables/userServices";
 
 export default {
   props: ["id", "slug"],
@@ -127,6 +135,10 @@ export default {
       }
     }
 
+    const hasPermission = (permission) => {
+      return userService.hasPermission(permission);
+    };
+
     return {
       recipe,
       error,
@@ -136,6 +148,7 @@ export default {
       showModal,
       toggleModal,
       deleteRecipe,
+      hasPermission,
     };
   },
 };

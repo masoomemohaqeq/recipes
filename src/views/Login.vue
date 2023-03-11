@@ -27,7 +27,9 @@
         <ErrorMessage v-if="error" :error="error" />
         <SuccessMessage v-if="success" :msg="success" />
       </div>
-      <div class="flex justify-between text-sm m-4 text-teal-700">
+      <div
+        class="flex flex-col md:flex-row justify-between text-sm m-4 text-teal-700"
+      >
         <a href="#">Dont have an account?</a>
         <a href="#">Forgot password?</a>
       </div>

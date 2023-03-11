@@ -20,12 +20,14 @@
         <router-link
           :to="{ name: 'addRecipe' }"
           class="cursor-pointer hover:border-b border-b-teal-700 pb-2"
+          v-if="hasPermission('Permissions.Recipes.Create')"
         >
-          <font-awesome-icon
+          <!-- <font-awesome-icon
             icon="fa-solid fa-file-circle-plus"
             class="inline-block md:hidden"
             title="Add new recipe"
-          />
+          /> -->
+          <Btn class="inline-block md:hidden text-xs" text="New Recipe" />
           <span class="hidden md:inline-block">New Recipe</span>
         </router-link>
         <router-link
@@ -56,7 +58,11 @@ export default {
       userService.logout();
     };
 
-    return { logout };
+    const hasPermission = (permission) => {
+      return userService.hasPermission(permission);
+    };
+
+    return { logout, hasPermission };
   },
 };
 </script>

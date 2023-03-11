@@ -1,10 +1,12 @@
 import { config } from "@/configurations/config";
 import { authHeader } from "../helpers/authHeader";
+import jwt_decode from "jwt-decode";
 
 export const userService = {
   login,
   logout,
   getAll,
+  hasPermission,
 };
 
 function login(email, password) {
@@ -14,8 +16,7 @@ function login(email, password) {
     body: JSON.stringify({ email, password }),
   };
 
-  console.log(config);
-  return fetch(`${config.apiUrl}/Identity/SignIn`, requestOptions)
+  return fetch(`${config.apiUrl}/Authentication/LogIn`, requestOptions)
     .then(handleResponse)
     .then((user) => {
       // login successful if there's a jwt token in the response
@@ -39,7 +40,7 @@ function getAll() {
     headers: authHeader(),
   };
 
-  return fetch(`${config.apiUrl}/Identity`, requestOptions).then(
+  return fetch(`${config.apiUrl}/Authentication`, requestOptions).then(
     handleResponse
   );
 }
@@ -60,4 +61,15 @@ function handleResponse(response) {
 
     return data;
   });
+}
+
+function hasPermission(permission) {
+  var user = localStorage.getItem("user");
+  if (user) {
+    var parsedUser = JSON.parse(user);
+    var decodedToken = jwt_decode(parsedUser.token);
+    return decodedToken.Permission.includes(permission);
+  } else {
+    return false;
+  }
 }
