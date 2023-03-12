@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { config } from "@/configurations/config";
 import { authHeader } from "@/helpers/authHeader";
 
@@ -15,29 +17,21 @@ async function uploadImage(file) {
 
   formData.append("file", file);
 
-  await fetch(`${config.apiUrl}/FileUploader?folder=recipes`, {
-    method: "POST",
-    mode: "cors",
-    body: formData,
-    headers: authHeader(),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Image can not be uploaded");
-      }
-
-      return response.json();
+  await axios
+    .post(`${config.apiUrl}/FileUploader/Upload?folder=recipes`, formData, {
+      mode: "cors",
+      headers: authHeader(),
     })
-    .then((data) => {
-      if (data.message) {
-        uploadResult.message = data.message;
+    .then((response) => {
+      if (response.data.message) {
+        uploadResult.message = response.data.message;
       } else {
         uploadResult.success = true;
-        uploadResult.url = data.url;
+        uploadResult.url = response.data.url;
       }
     })
     .catch((err) => {
-      uploadResult.message = err.message;
+      uploadResult.message = err;
       return uploadResult;
     });
 

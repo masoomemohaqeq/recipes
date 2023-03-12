@@ -23,7 +23,7 @@
           />
         </div>
       </form>
-      <div class="my-4">
+      <div class="m-4">
         <ErrorMessage v-if="error" :error="error" />
         <SuccessMessage v-if="success" :msg="success" />
       </div>
@@ -68,21 +68,16 @@ export default {
         .login(login.value.email, login.value.password)
         .then(
           (user) => {
-            success.value = "Successful Login. ";
             router.push("/");
+            success.value = "Successful Login. ";
           },
-          (error) => {
-            error.value = err.message;
+          (err) => {
+            error.value = err;
           }
         )
         .finally(() => {
           isLoading.value = false;
         });
-
-      try {
-      } catch (err) {
-        error.value = err.message;
-      }
     }
 
     return {

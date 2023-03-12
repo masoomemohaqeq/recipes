@@ -1,6 +1,7 @@
 import { config } from "@/configurations/config";
 import { authHeader } from "../helpers/authHeader";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 export const userService = {
   login,
@@ -10,57 +11,45 @@ export const userService = {
 };
 
 function login(email, password) {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  };
-
-  return fetch(`${config.apiUrl}/Authentication/LogIn`, requestOptions)
-    .then(handleResponse)
-    .then((user) => {
-      // login successful if there's a jwt token in the response
+  return axios
+    .post(`${config.apiUrl}/Authentication/LogIn`, { email, password })
+    .then((response) => {
+      const user = response.data;
       if (user.token) {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem("user", JSON.stringify(user));
       }
 
       return user;
+    })
+    .catch((error) => {
+      let errorText;
+      if (error.response) {
+        errorText = error.response.data;
+      } else {
+        errorText = "something went wrong...";
+      }
+      return Promise.reject(errorText);
     });
 }
 
 function logout() {
-  // remove user from local storage to log user out
   localStorage.removeItem("user");
 }
 
 function getAll() {
-  const requestOptions = {
-    method: "GET",
-    headers: authHeader(),
-  };
-
-  return fetch(`${config.apiUrl}/Authentication`, requestOptions).then(
-    handleResponse
-  );
-}
-
-function handleResponse(response) {
-  return response.text().then((text) => {
-    const data = text && JSON.parse(text);
-    if (!response.ok) {
-      if (response.status === 401) {
-        // auto logout if 401 response returned from api
-        logout();
-        location.reload(true);
-      }
-
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-    }
-
-    return data;
-  });
+  axios
+    .get(`${config.apiUrl}/Authentication`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+      // if 401
+      // logout();
+      // location.reload(true);
+    });
 }
 
 function hasPermission(permission) {

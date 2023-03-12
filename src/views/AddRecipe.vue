@@ -81,6 +81,11 @@
 <script>
 import { ref } from "@vue/reactivity";
 
+import axios from "axios";
+
+import { config } from "@/configurations/config";
+import { authHeader } from "@/helpers/authHeader";
+
 import Btn from "@/components/buttons/Btn.vue";
 import BtnSecond from "@/components/buttons/BtnSecond.vue";
 import ErrorMessage from "@/components/messages/ErrorMessage.vue";
@@ -129,29 +134,25 @@ export default {
           throw new Error(`Image: ${imageResult.message}`);
         }
 
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(recipe.value),
-        };
-
-        const response = await fetch(
-          "https://localhost:7109/api/Recipes",
-          requestOptions
+        const response = await axios.post(
+          `${config.apiUrl}/Recipes`,
+          recipe.value,
+          {
+            headers: authHeader(),
+          }
         );
 
-        if (!response.ok) {
-          throw Error("Something went wrong...");
-        }
+        const data = response.data;
 
-        const data = await response.json();
+        // console.log(data.data);
+
         recipe.value = clearRecipe();
         cardImageFile.value = null;
         imageFile.value = null;
 
         success.value = "Successfully added.";
       } catch (err) {
-        error.value = err.message;
+        error.value = err;
       }
     }
 

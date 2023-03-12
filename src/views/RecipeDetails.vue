@@ -78,6 +78,11 @@
 import { ref } from "@vue/reactivity";
 import router from "@/router";
 
+import axios from "axios";
+
+import { config } from "@/configurations/config";
+import { authHeader } from "@/helpers/authHeader";
+
 import Loading from "@/components/Loading.vue";
 import Error from "@/components/messages/Error.vue";
 import Stars from "@/components/Stars.vue";
@@ -114,24 +119,14 @@ export default {
     }
 
     async function deleteRecipe() {
-      const requestOptions = {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      };
-
       try {
-        const response = await fetch(
-          "https://localhost:7109/api/Recipes/" + props.id,
-          requestOptions
-        );
-
-        if (!response.ok) {
-          throw Error("Something went wrong...");
-        }
-
+        await axios.delete(`${config.apiUrl}/Recipes/${props.id}`, {
+          headers: authHeader(),
+        });
+        debugger;
         router.push("/");
       } catch (err) {
-        error.value = err.message;
+        error.value = err;
       }
     }
 

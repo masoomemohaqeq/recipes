@@ -19,6 +19,9 @@
 <script>
 import { ref } from "@vue/reactivity";
 import { computed, onMounted } from "@vue/runtime-core";
+
+import axios from "axios";
+
 import { config } from "@/configurations/config";
 import { authHeader } from "@/helpers/authHeader";
 
@@ -39,15 +42,11 @@ export default {
 
     async function getRecipes() {
       try {
-        const requestOptions = {
-          method: "GET",
+        const res = await axios.get(`${config.apiUrl}/Recipes`, {
           headers: authHeader(),
-        };
-        const res = await fetch(`${config.apiUrl}/Recipes`, requestOptions);
+        });
 
-        if (!res.ok) throw Error("Something went wrong...");
-
-        recipes.value = await res.json();
+        recipes.value = res.data;
       } catch (err) {
         error.value = err.message;
       }

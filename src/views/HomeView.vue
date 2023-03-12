@@ -53,7 +53,6 @@ export default {
     const selectedCategory = ref("");
 
     const setSeletedCategory = (cat) => {
-      console.log(cat);
       selectedCategory.value = cat;
     };
 

@@ -97,6 +97,11 @@
 <script>
 import { ref } from "@vue/reactivity";
 
+import axios from "axios";
+
+import { config } from "@/configurations/config";
+import { authHeader } from "@/helpers/authHeader";
+
 import Btn from "@/components/buttons/Btn.vue";
 import BtnSecond from "@/components/buttons/BtnSecond.vue";
 import NavBar from "@/components/NavBar.vue";
@@ -155,28 +160,16 @@ export default {
           }
         }
 
-        const requestOptions = {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(recipe.value),
-        };
+        await axios.put(`${config.apiUrl}/Recipes/${props.id}`, recipe.value, {
+          headers: authHeader(),
+        });
 
-        const response = await fetch(
-          "https://localhost:7109/api/Recipes/" + props.id,
-          requestOptions
-        );
-
-        if (!response.ok) {
-          throw Error("Something went wrong...");
-        }
-
-        // const data = await response.json();
         success.value = "Successfully updated. ";
 
         cardImageFile.value = null;
         imageFile.value = null;
       } catch (err) {
-        error.value = err.message;
+        error.value = err;
       }
     }
 

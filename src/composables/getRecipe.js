@@ -1,4 +1,7 @@
 import { ref } from "@vue/reactivity";
+
+import axios from "axios";
+
 import { config } from "@/configurations/config";
 import { authHeader } from "@/helpers/authHeader";
 
@@ -9,21 +12,17 @@ function getRecipe(id) {
 
   async function getRecipe() {
     try {
-      const requestOptions = {
-        method: "GET",
+      const res = await axios.get(`${config.apiUrl}/Recipes/${id}`, {
         headers: authHeader(),
-      };
-      const res = await fetch(`${config.apiUrl}/Recipes/${id}`, requestOptions);
+      });
 
-      if (!res.ok) throw Error("Something went wrong...");
-
-      recipe.value = await res.json();
+      recipe.value = res.data;
 
       recipe.value.ingredient.split("\n").forEach((i) => {
         getIngredients.value += `<li>* ${i}</li>`;
       });
     } catch (err) {
-      error.value = err.message;
+      error.value = err;
     }
   }
 
