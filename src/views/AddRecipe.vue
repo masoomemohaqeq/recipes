@@ -81,10 +81,7 @@
 <script>
 import { ref } from "@vue/reactivity";
 
-import axios from "axios";
-
-import { config } from "@/configurations/config";
-import { authHeader } from "@/helpers/authHeader";
+import { recipesService } from "@/services/recipesService";
 
 import Btn from "@/components/buttons/Btn.vue";
 import BtnSecond from "@/components/buttons/BtnSecond.vue";
@@ -134,13 +131,8 @@ export default {
           throw new Error(`Image: ${imageResult.message}`);
         }
 
-        const response = await axios.post(
-          `${config.apiUrl}/Recipes`,
-          recipe.value,
-          {
-            headers: authHeader(),
-          }
-        );
+        const recService = new recipesService();
+        const response = await recService.create(recipe.value);
 
         const data = response.data;
 

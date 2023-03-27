@@ -97,10 +97,7 @@
 <script>
 import { ref } from "@vue/reactivity";
 
-import axios from "axios";
-
-import { config } from "@/configurations/config";
-import { authHeader } from "@/helpers/authHeader";
+import { recipesService } from "@/services/recipesService";
 
 import Btn from "@/components/buttons/Btn.vue";
 import BtnSecond from "@/components/buttons/BtnSecond.vue";
@@ -160,9 +157,8 @@ export default {
           }
         }
 
-        await axios.put(`${config.apiUrl}/Recipes/${props.id}`, recipe.value, {
-          headers: authHeader(),
-        });
+        const recService = new recipesService();
+        await recService.update(props.id, recipe.value);
 
         success.value = "Successfully updated. ";
 

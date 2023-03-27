@@ -23,11 +23,19 @@ function login(email, password) {
     })
     .catch((error) => {
       let errorText;
+      errorText = "something went wrong...";
       if (error.response) {
         errorText = error.response.data;
+
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
       } else {
-        errorText = "something went wrong...";
+        console.log("Error", error.message);
       }
+      console.log(error.config);
       return Promise.reject(errorText);
     });
 }

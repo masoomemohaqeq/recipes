@@ -20,10 +20,7 @@
 import { ref } from "@vue/reactivity";
 import { computed, onMounted } from "@vue/runtime-core";
 
-import axios from "axios";
-
-import { config } from "@/configurations/config";
-import { authHeader } from "@/helpers/authHeader";
+import { recipesService } from "@/services/recipesService";
 
 import Card from "@/components/Card.vue";
 import Loading from "@/components/Loading.vue";
@@ -42,9 +39,8 @@ export default {
 
     async function getRecipes() {
       try {
-        const res = await axios.get(`${config.apiUrl}/Recipes`, {
-          headers: authHeader(),
-        });
+        const recService = new recipesService();
+        const res = await recService.getAll();
 
         recipes.value = res.data;
       } catch (err) {

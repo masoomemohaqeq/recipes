@@ -49,7 +49,7 @@
 
 <script>
 import Btn from "@/components/buttons/Btn";
-import { userService } from "@/composables/userServices";
+import { userService } from "@/services/userServices";
 
 export default {
   components: { Btn },

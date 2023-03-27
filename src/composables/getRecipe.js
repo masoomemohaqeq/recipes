@@ -1,9 +1,6 @@
 import { ref } from "@vue/reactivity";
 
-import axios from "axios";
-
-import { config } from "@/configurations/config";
-import { authHeader } from "@/helpers/authHeader";
+import { recipesService } from "@/services/recipesService";
 
 function getRecipe(id) {
   const recipe = ref(clearRecipe());
@@ -12,9 +9,8 @@ function getRecipe(id) {
 
   async function getRecipe() {
     try {
-      const res = await axios.get(`${config.apiUrl}/Recipes/${id}`, {
-        headers: authHeader(),
-      });
+      const recService = new recipesService();
+      const res = await recService.get(id);
 
       recipe.value = res.data;
 

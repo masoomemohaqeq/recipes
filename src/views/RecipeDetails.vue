@@ -78,11 +78,6 @@
 import { ref } from "@vue/reactivity";
 import router from "@/router";
 
-import axios from "axios";
-
-import { config } from "@/configurations/config";
-import { authHeader } from "@/helpers/authHeader";
-
 import Loading from "@/components/Loading.vue";
 import Error from "@/components/messages/Error.vue";
 import Stars from "@/components/Stars.vue";
@@ -92,7 +87,8 @@ import BtnDefault from "@/components/buttons/BtnDefault.vue";
 import Recipes from "@/components/Recipes.vue";
 
 import GetRecipe from "@/composables/getRecipe";
-import { userService } from "@/composables/userServices";
+import { userService } from "@/services/userServices";
+import { recipesService } from "@/services/recipesService";
 
 export default {
   props: ["id", "slug"],
@@ -117,13 +113,12 @@ export default {
     function toggleModal() {
       showModal.value = !showModal.value;
     }
+    const recService = new recipesService();
 
     async function deleteRecipe() {
       try {
-        await axios.delete(`${config.apiUrl}/Recipes/${props.id}`, {
-          headers: authHeader(),
-        });
-        debugger;
+        await recService.delete(props.id);
+
         router.push("/");
       } catch (err) {
         error.value = err;

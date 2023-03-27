@@ -45,7 +45,7 @@ import Btn from "@/components/buttons/Btn.vue";
 import ErrorMessage from "@/components/messages/ErrorMessage.vue";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import Loading from "@/components/Loading.vue";
-import { userService } from "@/composables/userServices";
+import { userService } from "@/services/userServices";
 
 export default {
   components: { Btn, Loading, ErrorMessage, SuccessMessage },
